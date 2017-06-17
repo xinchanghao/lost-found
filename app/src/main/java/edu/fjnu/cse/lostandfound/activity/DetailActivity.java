@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import hk.path.lf.R;
+import edu.fjnu.cse.lostandfound.R;
 import edu.fjnu.cse.lostandfound.entities.LostItem;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

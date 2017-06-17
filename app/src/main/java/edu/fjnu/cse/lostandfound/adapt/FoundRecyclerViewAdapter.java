@@ -26,7 +26,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import hk.path.lf.R;
+import edu.fjnu.cse.lostandfound.R;
 import edu.fjnu.cse.lostandfound.activity.AppContext;
 import edu.fjnu.cse.lostandfound.activity.DetailActivity;
 import edu.fjnu.cse.lostandfound.entities.LostItem;

@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import hk.path.lf.R;
+import edu.fjnu.cse.lostandfound.R;
 
 /**
  * 支持上拉加载更多的

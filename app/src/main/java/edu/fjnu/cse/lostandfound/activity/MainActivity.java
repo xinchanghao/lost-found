@@ -26,10 +26,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import edu.fjnu.cse.lostandfound.R;
 import edu.fjnu.cse.lostandfound.fragment.FoundFragment;
 import edu.fjnu.cse.lostandfound.fragment.HomeFragment;
 import edu.fjnu.cse.lostandfound.fragment.LostFragment;
-import hk.path.lf.R;
 
 ///
 public class MainActivity extends BaseActivity
@@ -92,8 +92,10 @@ public class MainActivity extends BaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "敬请期待", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "敬请期待", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, PublishActivity.class);
+                startActivity(intent);
             }
         });
 

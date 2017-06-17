@@ -16,9 +16,9 @@ public class Utils {
     private static final MediaType CARDINFORMATION = MediaType.parse("Card Information");
     public static int bytes3ToInt(byte[] src, int offset) {
         int value;
-        value = (int) (((src[offset] & 0xFF) << 16)
+        value = ((src[offset] & 0xFF) << 16)
                 | ((src[offset + 1] & 0xFF) << 8)
-                | (src[offset + 2] & 0xFF));
+                | (src[offset + 2] & 0xFF);
         return value;
     }
     public static void POST(String url, byte[] data, Callback callback) throws IOException {
