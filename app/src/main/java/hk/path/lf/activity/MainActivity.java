@@ -30,7 +30,7 @@ import hk.path.lf.R;
 import hk.path.lf.fragment.FoundFragment;
 import hk.path.lf.fragment.HomeFragment;
 import hk.path.lf.fragment.LostFragment;
-
+///
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private AppContext appContext;
