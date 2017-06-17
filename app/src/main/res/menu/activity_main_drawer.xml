@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_home"
+            android:title="@string/home"
+            android:checked="true"/>
+        <item
+            android:id="@+id/nav_lost"
+            android:icon="@drawable/ic_menu_lost"
+            android:title="@string/ILost" />
+        <item
+            android:id="@+id/nav_found"
+            android:icon="@drawable/ic_menu_found"
+            android:title="@string/IFound" />
+    </group>
+
+    <!--item android:title="分享">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+        </menu>
+    </item-->
+
+</menu>
