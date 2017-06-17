@@ -2,7 +2,7 @@ package edu.fjnu.cse.lostandfound.entities;
 
 /**
  * api lost 接口
- * Created by zspmh on 2016-12-25.
+ * Created by zspmh on 2017-6-10.
  */
 
 public class API_GetLost {

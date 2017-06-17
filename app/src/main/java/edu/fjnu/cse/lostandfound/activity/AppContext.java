@@ -6,7 +6,7 @@ import edu.fjnu.cse.lostandfound.entities.LostItem;
 
 /**
  * 全局Application
- * Created by zspmh on 2016-12-21.
+ * Created by zspmh on 2017-6-10.
  */
 
 public class AppContext extends Application {

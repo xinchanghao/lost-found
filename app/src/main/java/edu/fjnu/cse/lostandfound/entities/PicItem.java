@@ -6,7 +6,7 @@ import edu.fjnu.cse.lostandfound.activity.AppContext;
 
 /**
  * picitem实体
- * Created by zspmh on 2016-12-25.
+ * Created by zspmh on 2017-6-10.
  */
 
 public class PicItem {
