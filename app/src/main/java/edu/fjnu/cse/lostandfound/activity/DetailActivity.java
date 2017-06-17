@@ -253,7 +253,7 @@ public class DetailActivity extends AppCompatActivity {
          * 定义回调接口
          */
         public interface ImageCallback {
-            public void imageLoaded(Drawable imageDrawable, String imageUrl);
+            void imageLoaded(Drawable imageDrawable, String imageUrl);
         }
 
 

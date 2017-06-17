@@ -223,6 +223,12 @@ public class MainActivity extends BaseActivity
             transaction.replace(R.id.content_main, foundFragment);
             transaction.commit();
             toolbar.setTitle(R.string.IFound);
+        } else if (id == R.id.nav_card) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            transaction.replace(R.id.content_main, foundFragment);
+            transaction.commit();
+            toolbar.setTitle("查询餐卡");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

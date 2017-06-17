@@ -100,4 +100,5 @@
     <string name="prompt_captcha">请输入验证码</string>
     <string name="error_incorrect_captcha">验证码错误</string>
     <string name="error_incorrect_sid">学号不存在</string>
+    <string name="title_activity_publish">PublishActivity</string>
 </resources>
