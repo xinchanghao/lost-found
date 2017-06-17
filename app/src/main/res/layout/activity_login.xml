@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@mipmap/login_backgound"
     android:orientation="vertical"
-    tools:context="hk.path.lf.activity.LoginActivity">
+    tools:context="edu.fjnu.cse.lostandfound.activity.LoginActivity">
 
     <!-- Login progress -->
     <LinearLayout
