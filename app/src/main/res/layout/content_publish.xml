@@ -1,11 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/wpos_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:divider="@drawable/divider"
+    android:orientation="vertical"
+    android:showDividers="middle"
+
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="edu.fjnu.cse.lostandfound.activity.PublishActivity"
     tools:showIn="@layout/activity_publish">
 
-</android.support.constraint.ConstraintLayout>
+    <EditText
+        android:id="@+id/wpost_etitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:gravity="top|left"
+        android:hint="请输入标题"
+        android:maxLength="500"
+        android:padding="15dp"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="时间" />
+
+        <EditText
+            android:id="@+id/wpost_etime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:background="@android:color/transparent"
+            android:gravity="top|left"
+            android:hint="请输入时间"
+            android:inputType="datetime"
+            android:maxLength="500"
+            android:padding="15dp"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="地点" />
+
+        <EditText
+            android:id="@+id/wpost_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="top|left"
+            android:hint="请输入地点"
+            android:maxLength="500"
+            android:padding="15dp"
+            android:textColor="#000"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/wpost_et"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:gravity="top|left"
+        android:hint="请输入描述"
+        android:maxLength="500"
+        android:padding="15dp"
+        android:textColor="#000"
+        android:textSize="15sp" />
+
+    <RelativeLayout
+        android:id="@+id/wpost_imglayout"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/wpost_img"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:padding="5dp" />
+
+        <ImageView
+            android:id="@+id/wpost_remimg"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_alignParentRight="true"
+            android:background="#f00" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#dfdfdf"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp">
+
+        <ImageView
+            android:id="@+id/wpost_bq"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_local_see_black_24dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="您还可以输入 "
+            android:textColor="#000"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/wpost_wordnum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="500"
+            android:textColor="#f00"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text=" 字"
+            android:textColor="#000"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/wpost_bqview"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:background="#f00"
+        android:visibility="gone" />
+
+</LinearLayout>
