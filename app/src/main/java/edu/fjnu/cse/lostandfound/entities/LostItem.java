@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * lostitem 实体
- * Created by zspmh on 2016-12-21.
+ * Created by zspmh on 2017-6-10.
  */
 
 public class LostItem {

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * api prelogin ret 接口
- * Created by zspmh on 2016-12-23.
+ * Created by zspmh on 2017-6-10.
  */
 
 public class API_Prelogin_Ret {

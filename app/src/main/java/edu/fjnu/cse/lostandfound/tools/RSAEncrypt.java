@@ -19,7 +19,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 /**
- * Created by zspmh on 2016-12-04.
+ * Created by zspmh on 2017-6-10.
  */
 public class RSAEncrypt {
     public static final String

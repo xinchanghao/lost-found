@@ -2,7 +2,7 @@ package edu.fjnu.cse.lostandfound.entities;
 
 /**
  * api login 接口
- * Created by qinghua on 2016/11/29.
+ * Created by zspmh on 2017-6-10.
  */
 
 public class API_Login {

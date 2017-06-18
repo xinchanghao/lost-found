@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#3097cd</color>
     <color name="colorAccent">#434343</color>
     <color name="global_bg">#eeeff3</color>
+    <color name="global_bg1">#a372ce</color>
+    <color name="global_bg2">#62e28d</color>
+    <color name="global_bg3">#b3e26c</color>
+    <color name="global_bg4">#e40215</color>
 </resources>
