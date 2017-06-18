@@ -1,6 +1,7 @@
 package edu.fjnu.cse.lostandfound.activity;
 
 import android.app.Application;
+import android.preference.PreferenceManager;
 
 import edu.fjnu.cse.lostandfound.entities.LostItem;
 
@@ -17,6 +18,14 @@ public class AppContext extends Application {
     //public static String mDomain = "192.168.198.190";
     public static String mDomain = "l.city";
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        isLogined = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("isLogined", false);
+        SID = PreferenceManager.getDefaultSharedPreferences(this).getString("SID", "");
+        Name = PreferenceManager.getDefaultSharedPreferences(this).getString("Name", "");
+    }
+
     public LostItem getCurrentItem() {
         return currentItem;
     }
@@ -27,14 +36,17 @@ public class AppContext extends Application {
 
     public void setName(String name) {
         Name = name;
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("Name", name).apply();
     }
 
     public void setLogined(boolean logined) {
         isLogined = logined;
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("isLogined", logined).apply();
     }
 
     public void setSID(String SID) {
         this.SID = SID;
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("SID", SID).apply();
     }
 
 

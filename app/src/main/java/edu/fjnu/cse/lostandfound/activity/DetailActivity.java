@@ -150,7 +150,7 @@ public class DetailActivity extends AppCompatActivity {
          * Remove a page for the given position.
          * 滑动过后就销毁 ，销毁当前页的前一个的前一个的页！
          * instantiateItem(View container, int position)
-         * This method was deprecated in API level . Use instantiateItem(ViewGroup, int)
+         * This method was deprecated in api level . Use instantiateItem(ViewGroup, int)
          */
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {

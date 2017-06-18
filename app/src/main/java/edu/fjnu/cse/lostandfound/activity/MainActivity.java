@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import edu.fjnu.cse.lostandfound.R;
+import edu.fjnu.cse.lostandfound.fragment.CardFragment;
 import edu.fjnu.cse.lostandfound.fragment.FoundFragment;
 import edu.fjnu.cse.lostandfound.fragment.HomeFragment;
 import edu.fjnu.cse.lostandfound.fragment.LostFragment;
@@ -47,6 +48,7 @@ public class MainActivity extends BaseActivity
     private HomeFragment homeFragment;
     private LostFragment lostFragment;
     private FoundFragment foundFragment;
+    private CardFragment cardFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +85,7 @@ public class MainActivity extends BaseActivity
         homeFragment = new HomeFragment();
         lostFragment = new LostFragment();
         foundFragment = new FoundFragment();
-
+        cardFragment = new CardFragment();
         //Toolbar 设置标题
         toolbar.setTitle(R.string.app_name_long);
         setSupportActionBar(toolbar);
@@ -228,7 +230,7 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_card) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.replace(R.id.content_main, foundFragment);
+            transaction.replace(R.id.content_main, cardFragment);
             transaction.commit();
             toolbar.setTitle("查询餐卡");
         }

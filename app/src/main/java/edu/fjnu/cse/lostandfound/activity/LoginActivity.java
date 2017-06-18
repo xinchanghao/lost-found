@@ -322,7 +322,6 @@ public class LoginActivity extends BaseActivity {
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
         mIDView.setAdapter(adapter);
     }
 

@@ -115,7 +115,7 @@ public class api {
                 final Object resultData;
                 try {
                     String body = response.body().string();
-                    Log.d("API-Body", body);
+                    Log.d("api-Body", body);
                     resultData = JSON.parseObject(body, retClass);
                     if (activity != null) {
                         activity.runOnUiThread(new Runnable() {
@@ -184,7 +184,7 @@ public class api {
                 final Object resultData;
                 try {
                     String body = response.body().string();
-                    //Log.d("API-Body", body);
+                    //Log.d("api-Body", body);
                     resultData = JSON.parseObject(body, retClass);
                     ret.ret(0, resultData);
                 } catch (JSONException e) {
