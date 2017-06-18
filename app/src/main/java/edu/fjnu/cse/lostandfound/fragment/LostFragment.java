@@ -38,6 +38,13 @@ public class LostFragment extends Fragment {
     public LostFragment() {
     }
 
+    public static LostFragment newInstance(int columnCount) {
+        LostFragment fragment = new LostFragment();
+        return fragment;
+    }
+
+
+
 
 
 }
