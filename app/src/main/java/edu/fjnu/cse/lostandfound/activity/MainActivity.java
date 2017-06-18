@@ -33,6 +33,7 @@ import edu.fjnu.cse.lostandfound.fragment.CardFragment;
 import edu.fjnu.cse.lostandfound.fragment.FoundFragment;
 import edu.fjnu.cse.lostandfound.fragment.HomeFragment;
 import edu.fjnu.cse.lostandfound.fragment.LostFragment;
+import edu.fjnu.cse.lostandfound.fragment.VoiceFragment;
 
 ///
 public class MainActivity extends BaseActivity
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity
     private LostFragment lostFragment;
     private FoundFragment foundFragment;
     private CardFragment cardFragment;
+    private VoiceFragment voiceFragment;
     private PendingIntent pi = null;
     private boolean isNFC_support = false;
     private IntentFilter tagDetected = null;
@@ -92,6 +94,7 @@ public class MainActivity extends BaseActivity
         lostFragment = new LostFragment();
         foundFragment = new FoundFragment();
         cardFragment = new CardFragment();
+        voiceFragment = new VoiceFragment();
         //Toolbar 设置标题
         toolbar.setTitle(R.string.app_name_long);
         setSupportActionBar(toolbar);
@@ -306,11 +309,19 @@ public class MainActivity extends BaseActivity
             toolbar.setTitle(R.string.IFound);
         } else if (id == R.id.nav_card) {
             changeToCard();
+        } else if (id == R.id.nav_voice) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            transaction.replace(R.id.content_main, voiceFragment);
+            transaction.commit();
+            toolbar.setTitle("语音寻物");
+            fab.setVisibility(View.GONE);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     private void changeToCard() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
