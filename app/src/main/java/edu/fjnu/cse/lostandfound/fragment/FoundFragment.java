@@ -49,6 +49,95 @@ public class FoundFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_item_list, container, false);
+        findView(view);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                api.Request(new API_GetFound(1), new API_Return<API_GetFound_Ret>() {
+                    @Override
+                    public void ret(int Code, API_GetFound_Ret ret) {
+                        if (Code == 0) {
+                            LostItem[] mDatas = ret.getLostItems();
+                            swipeRefreshLayout.setRefreshing(false);
+                            foundRecyclerViewAdapter.setDatas(mDatas);
+                            if (ret.getTotalRows() <= 10) {
+                                recyclerView.setAutoLoadMoreEnable(false);
+                            } else {
+                                recyclerView.setAutoLoadMoreEnable(true);
+                            }
+                            recyclerView.scrollToPosition(0);
+                            recyclerView.setAdapter(foundRecyclerViewAdapter);
+                            //foundRecyclerViewAdapter.noti
+                        } else {
+                            System.out.println("error:" + Code);
+                        }
+                    }
+                }, FoundFragment.this.getActivity());
+
+            }
+        });
+        Context context = view.getContext();
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        foundRecyclerViewAdapter = new FoundRecyclerViewAdapter(this.getActivity(), mDatas);
+        recyclerView.setAdapter(foundRecyclerViewAdapter);
+        recyclerView.setAutoLoadMoreEnable(true);
+        recyclerView.setLoadMoreListener(new LoadMoreRecyclerView.LoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                recyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        count++;
+                        api.Request(new API_GetFound(count), new API_Return<API_GetFound_Ret>() {
+                            @Override
+                            public void ret(int Code, API_GetFound_Ret ret) {
+                                if (Code == 0) {
+                                    LostItem[] mDatas = ret.getLostItems();
+                                    foundRecyclerViewAdapter.addDatas(mDatas);
+                                    recyclerView.setAutoLoadMoreEnable(true);
+                                    recyclerView.notifyMoreFinish(ret.getTotalRows() > count * 10);
+                                } else {
+                                    System.out.println("error:" + Code);
+                                }
+                            }
+                        }, FoundFragment.this.getActivity());
+
+                    }
+                }, 1000);
+            }
+        });
+        foundRecyclerViewAdapter.notifyDataSetChanged();
+
+        initData();
+        return view;
+    }
+
+    private void initData() {
+        api.Request(new API_GetFound(1), new API_Return<API_GetFound_Ret>() {
+            @Override
+            public void ret(int Code, API_GetFound_Ret ret) {
+                if (Code == 0) {
+                    LostItem[] mDatas = ret.getLostItems();
+                    swipeRefreshLayout.setRefreshing(false);
+                    foundRecyclerViewAdapter.setDatas(mDatas);
+                    if (ret.getTotalRows() <= 10) {
+                        recyclerView.setAutoLoadMoreEnable(false);
+                    } else {
+                        recyclerView.setAutoLoadMoreEnable(true);
+                    }
+                    foundRecyclerViewAdapter.notifyDataSetChanged();
+                    recyclerView.scrollToPosition(0);
+                } else {
+                    System.out.println("error:" + Code);
+                }
+            }
+        }, FoundFragment.this.getActivity());
+    }
 
     private void findView(View view) {
         recyclerView = (LoadMoreRecyclerView) view.findViewById(R.id.list);
