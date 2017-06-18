@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
@@ -30,14 +31,14 @@ public class CardFragment extends Fragment {
     private LoadMoreRecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LostRecyclerViewAdapter lostRecyclerViewAdapter;
-
+    LinearLayout cardinfo;
 
     //包裹点点的LinearLayout
     private ViewGroup pageGroup;
     private ImageView imageView;
     private View pageItem;
     private ViewPager viewPager;
-    private ImageView[] indicatorImages;//存放引到图片数组
+    private ImageView[] indicatorImages;
     private LayoutInflater inflater;
 
     public CardFragment() {
@@ -63,18 +64,24 @@ public class CardFragment extends Fragment {
     }
 
     private void findView(View view) {
-
+        cardinfo = (LinearLayout) getActivity().findViewById(R.id.cardinfo);
+        //        cardinfo.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (cardinfo != null)
+            cardinfo.setVisibility(View.VISIBLE);
+        else {
+            cardinfo = (LinearLayout) getActivity().findViewById(R.id.cardinfo);
+            cardinfo.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        cardinfo.setVisibility(View.GONE);
     }
-
-
 }
