@@ -29,7 +29,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-
+//
 public class CardFragment extends Fragment {
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -122,6 +122,7 @@ public class CardFragment extends Fragment {
                 break;
         }
     }
+
 
     public void readFromCard(Intent intent) {
 //        resetValue();
@@ -272,5 +273,7 @@ public class CardFragment extends Fragment {
             return false;
         }
     }
+
+
 
 }
