@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +29,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends BaseActivity {
     private LostItem item;
     private AppContext appContext;
     private TextView mAddressView;
     private TextView mDetailView;
     private TextView mTimeView;
     private TextView mLabelView;
+    private TextView senderTextView;
+    private TextView sendTimeTextView;
 
     //包裹点点的LinearLayout
     private ViewGroup pageGroup;
@@ -60,8 +61,10 @@ public class DetailActivity extends AppCompatActivity {
     private void init() {
         mAddressView.setText(item.getPlace());
         mDetailView.setText(item.getDetail());
-        mTimeView.setText(item.getCreateTime());
+        mTimeView.setText(item.getTime());
         mLabelView.setText(item.getLabel());
+        senderTextView.setText(item.getUser());
+        sendTimeTextView.setText(item.getCreateTime());
 
         indicatorImages = new ImageView[item.getPic().length];
 
@@ -94,7 +97,8 @@ public class DetailActivity extends AppCompatActivity {
         mTimeView = (TextView) findViewById(R.id.timeTextView);
         mLabelView = (TextView) findViewById(R.id.labelTextView);
         imageView = (ImageView) findViewById(R.id.itemImageView);
-
+        senderTextView = (TextView) findViewById(R.id.senderTextView);
+        sendTimeTextView =(TextView) findViewById(R.id.sendTimeTextView);
     }
 
     /**

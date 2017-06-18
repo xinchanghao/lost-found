@@ -3,6 +3,8 @@ package edu.fjnu.cse.lostandfound.activity;
 import android.app.Application;
 import android.preference.PreferenceManager;
 
+import com.iflytek.cloud.SpeechUtility;
+
 import edu.fjnu.cse.lostandfound.entities.LostItem;
 
 /**
@@ -21,6 +23,7 @@ public class AppContext extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        SpeechUtility.createUtility(this, "appid=59227e71" );
         isLogined = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("isLogined", false);
         SID = PreferenceManager.getDefaultSharedPreferences(this).getString("SID", "");
         Name = PreferenceManager.getDefaultSharedPreferences(this).getString("Name", "");
