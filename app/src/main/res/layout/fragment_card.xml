@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/statusWait"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -53,6 +54,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/statusNoNFC"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -89,6 +91,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/statusError"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -148,6 +151,24 @@
             android:divider="@drawable/divider2"
             android:orientation="vertical"
             android:showDividers="middle">
+            <LinearLayout
+                android:id="@+id/loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFF"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:textSize="18dp"
+                    android:text="加载中..." />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -165,10 +186,10 @@
                     android:text="卡内余额" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/textMoney"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="￥20.12"
+                    android:text="..."
                     android:textColor="#e74c3c"
                     android:textSize="30dp" />
             </LinearLayout>
@@ -189,10 +210,10 @@
                     android:text="身份证号" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/textID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="12341214212222123"
+                    android:text="..."
                     android:textSize="23dp" />
             </LinearLayout>
 
@@ -212,10 +233,10 @@
                     android:text="最近消费时间" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/textLastTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="2012年11月10日"
+                    android:text="..."
                     android:textSize="23dp" />
             </LinearLayout>
 
@@ -235,10 +256,10 @@
                     android:text="最近消费总额" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/textLastCost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="￥20.12"
+                    android:text="..."
                     android:textSize="23dp" />
             </LinearLayout>
 
@@ -258,10 +279,10 @@
                     android:text="当日消费总额" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/textTodayCost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="￥20.12"
+                    android:text="..."
                     android:textSize="23dp" />
             </LinearLayout>
         </LinearLayout>

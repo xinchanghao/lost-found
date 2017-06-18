@@ -5,12 +5,14 @@ package edu.fjnu.cse.lostandfound.activity;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -49,6 +51,10 @@ public class MainActivity extends BaseActivity
     private LostFragment lostFragment;
     private FoundFragment foundFragment;
     private CardFragment cardFragment;
+    private PendingIntent pi = null;
+    private boolean isNFC_support = false;
+    private IntentFilter tagDetected = null;
+    NfcAdapter nfcAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,9 +121,33 @@ public class MainActivity extends BaseActivity
         transaction.commit();
     }
 
+    private void startNFC_Listener() {
+        // 开始监听NFC设备是否连接，如果连接就发pi意图
+        nfcAdapter.enableForegroundDispatch(this, pi,
+                new IntentFilter[]{tagDetected}, null);
+    }
+
+    private void stopNFC_Listener() {
+        // 停止监听NFC设备是否连接
+        nfcAdapter.disableForegroundDispatch(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isNFC_support) {
+            // 当前Activity如果不在手机的最前端，就停止NFC设备连接的监听
+            stopNFC_Listener();
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
+        NFCSupport();
+        if (isNFC_support) {
+            startNFC_Listener();
+        }
         //判定登录 设置nav
         if (appContext.isLogined()) {
             navSID.setText(appContext.getSID());
@@ -155,10 +185,56 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        if (NfcAdapter.ACTION_ADAPTER_STATE_CHANGED.equals(intent.getAction())) {
+            changeToCard();
+            cardFragment.readFromCard(intent);
+//            readFromCard(intent);
+        }
+        if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
+            changeToCard();
+            cardFragment.readFromCard(intent);
+        }
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
+            changeToCard();
+            cardFragment.readFromCard(intent);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    public void NFCSupport() {
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (nfcAdapter == null) {
+//            setStatus(2);
+            isNFC_support = false;
+        } else {
+            isNFC_support = true;
+            if (nfcAdapter != null && !nfcAdapter.isEnabled()) {
+//                setStatus(2);
+            } else {
+//                if (textView.getText().equals("请打开NFC功能") || textView.getText().equals("")) {
+//                    textView.setTextColor(Color.rgb(41, 128, 185));
+//                    textView.setText("等待接触卡片...");
+//                }
+            }
+            if (isNFC_support) {
+                init_NFC();
+            }
+        }
+    }
+
+    private void init_NFC() {
+        // 初始化PendingIntent，当有NFC设备连接上的时候，就交给当前Activity处理
+        pi = PendingIntent.getActivity(this, 0, new Intent(this, getClass())
+                .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        // 新建IntentFilter，使用的是第二种的过滤机制
+        tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
     }
 
     @Override
@@ -209,6 +285,7 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        fab.setVisibility(View.VISIBLE);
         if (id == R.id.nav_home) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -228,16 +305,19 @@ public class MainActivity extends BaseActivity
             transaction.commit();
             toolbar.setTitle(R.string.IFound);
         } else if (id == R.id.nav_card) {
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.replace(R.id.content_main, cardFragment);
-            transaction.commit();
-            toolbar.setTitle("查询餐卡");
+            changeToCard();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
+    private void changeToCard() {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.replace(R.id.content_main, cardFragment);
+        transaction.commit();
+        toolbar.setTitle("查询餐卡");
+        navigationView.getMenu().getItem(3).setChecked(true);
+        fab.setVisibility(View.GONE);
+    }
 }
