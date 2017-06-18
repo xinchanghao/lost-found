@@ -24,5 +24,71 @@ public class LostItem {
     @JSONField(name="pic")
     private PicItem[] Pic;
 
+    public String getTime() {
+        return Time;
+    }
 
+    public void setTime(String time) {
+        Time = time;
+    }
+
+    public PicItem[] getPic() {
+        if(Pic==null){
+            return new PicItem[0];
+        }else {
+            return Pic;
+        }
+    }
+
+    public void setPic(PicItem[] pic) {
+        Pic = pic;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public void setUser(String user) {
+        User = user;
+    }
+
+    public void setPlace(String place) {
+        Place = place;
+    }
+
+    public void setDetail(String detail) {
+        Detail = detail;
+    }
+
+    public void setLabel(String label) {
+        Label = label;
+    }
+
+    public void setCreateTime(String createTime) {
+        CreateTime = createTime;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public String getUser() {
+        return User;
+    }
+
+    public String getPlace() {
+        return Place;
+    }
+
+    public String getDetail() {
+        return Detail;
+    }
+
+    public String getLabel() {
+        return Label;
+    }
+
+    public String getCreateTime() {
+        return CreateTime;
+    }
 }
