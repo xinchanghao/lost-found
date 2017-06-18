@@ -1,7 +1,9 @@
 package edu.fjnu.cse.lostandfound.tools;
 
 /**
- * Created by zspmh on 2017-6-15.
+ * @Author: linqiu
+ * @Date: 2016/3/4 12:26
+ * @Description:
  */
 
 import java.security.MessageDigest;
