@@ -32,6 +32,10 @@
         <item>When possible</item>
         <item>Never</item>
     </string-array>
+    <string-array name="publish_type">
+        <item>我要发布招领信息</item>
+        <item>我要发布寻物信息</item>
+    </string-array>
     <string-array name="pref_example_list_values">
         <item>1</item>
         <item>0</item>
