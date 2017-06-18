@@ -76,44 +76,7 @@ public class TimePickerDialog {
 //        return inflate;
 //    }
 
-    /**
-     * 创建dialog
-     *
-     * @param view
-     */
-    private void initDialog(View view) {
-        mAlertDialog.setPositiveButton("确定",
-                new android.content.DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
-                        dialog.dismiss();
-
-                        if (mTag == 0) {
-                            getTimePickerValue();
-                        } else if (mTag == 1) {
-                            getDatePickerValue();
-                        } else if (mTag == 2) {
-                            getDatePickerValue();
-                            getTimePickerValue();
-                        }
-                        timePickerDialogInterface.positiveListener();
-
-                    }
-                });
-        mAlertDialog.setNegativeButton("取消",
-                new android.content.DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
-                        timePickerDialogInterface.negativeListener();
-                        dialog.dismiss();
-                    }
-                });
-        mAlertDialog.setView(view);
-    }
 //
 //    /**
 //     * 显示时间选择器
