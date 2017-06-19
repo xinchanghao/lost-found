@@ -8,4 +8,5 @@
     <color name="global_bg2">#62e28d</color>
     <color name="global_bg3">#b3e26c</color>
     <color name="global_bg4">#e40215</color>
+    <color name="white">#fff</color>
 </resources>

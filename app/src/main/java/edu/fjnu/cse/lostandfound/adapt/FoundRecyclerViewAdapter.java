@@ -3,12 +3,14 @@ package edu.fjnu.cse.lostandfound.adapt;
 /**
  * found适配器
  */
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -94,13 +96,34 @@ public class FoundRecyclerViewAdapter extends RecyclerView.Adapter<FoundRecycler
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppContext mAppContext = (AppContext) ((Activity)mContext).getApplication();
+                AppContext mAppContext = (AppContext) ((Activity) mContext).getApplication();
                 mAppContext.setCurrentItem(holder.mItem);
                 mContext.startActivity(new Intent(mContext, DetailActivity.class));
             }
         });
+        if(holder.mItem.getType() == 1) {
+            holder.type.setText("寻物");
+            if (holder.mItem.getStatus() == 0) {
+                holder.status.setText("未找到");
+                holder.status.setBackgroundColor(Color.parseColor("#e74c3c"));
+            } else {
+                holder.status.setText("已找到");
+                holder.status.setBackgroundColor(Color.parseColor("#2ecc71"));
+            }
+        } else {
+            holder.type.setText("招领");
+            if (holder.mItem.getStatus() == 0) {
+                holder.status.setText("待领取");
+                holder.status.setBackgroundColor(Color.parseColor("#e74c3c"));
+            } else {
+                holder.status.setText("已领取");
+                holder.status.setBackgroundColor(Color.parseColor("#2ecc71"));
+            }
+        }
+
+
         if (holder.mItem.getPic().length != 0) {
-            String imageUrl =  holder.mItem.getPic()[0].getThumbnailUrl();
+            String imageUrl = holder.mItem.getPic()[0].getThumbnailUrl();
 
             BitmapDrawable drawable = getBitmapDrawableFromMemoryCache(imageUrl);
             if (drawable != null) {
@@ -112,7 +135,7 @@ public class FoundRecyclerViewAdapter extends RecyclerView.Adapter<FoundRecycler
                 holder.imageView.setImageDrawable(asyncDrawable);
                 task.execute(imageUrl);
             }
-        }else{
+        } else {
             holder.imageView.setImageResource(R.mipmap.error_pic);
         }
     }
@@ -131,6 +154,8 @@ public class FoundRecyclerViewAdapter extends RecyclerView.Adapter<FoundRecycler
         public final TextView mLabelView;
         public LostItem mItem;
         public final CardView mCardView;
+        public final TextView type;
+        public final TextView status;
 
         public ViewHolder(View view) {
             super(view);
@@ -141,6 +166,8 @@ public class FoundRecyclerViewAdapter extends RecyclerView.Adapter<FoundRecycler
             mLabelView = (TextView) view.findViewById(R.id.labelTextView);
             imageView = (ImageView) view.findViewById(R.id.itemImageView);
             mCardView = (CardView) view.findViewById(R.id.cardView);
+            type = (TextView) view.findViewById(R.id.type);
+            status = (TextView) view.findViewById(R.id.status);
         }
     }
 

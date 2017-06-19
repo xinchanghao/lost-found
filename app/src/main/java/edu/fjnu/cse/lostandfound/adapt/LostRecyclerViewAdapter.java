@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -101,6 +102,13 @@ public class LostRecyclerViewAdapter extends RecyclerView.Adapter<LostRecyclerVi
                 mContext.startActivity(new Intent(mContext, DetailActivity.class));
             }
         });
+        if (holder.mItem.getStatus() == 0) {
+            holder.status.setText("待领取");
+            holder.status.setBackgroundColor(Color.parseColor("#e74c3c"));
+        } else {
+            holder.status.setText("已领取");
+            holder.status.setBackgroundColor(Color.parseColor("#2ecc71"));
+        }
         if (holder.mItem.getPic().length != 0) {
             String imageUrl = holder.mItem.getPic()[0].getThumbnailUrl();
 
@@ -133,16 +141,20 @@ public class LostRecyclerViewAdapter extends RecyclerView.Adapter<LostRecyclerVi
         public final TextView mLabelView;
         public LostItem mItem;
         public final CardView mCardView;
+        public final TextView type;
+        public final TextView status;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            type = (TextView) view.findViewById(R.id.type);
             mAddressView = (TextView) view.findViewById(R.id.addressTextView);
             mDetailView = (TextView) view.findViewById(R.id.detailTextView);
             mTimeView = (TextView) view.findViewById(R.id.timeTextView);
             mLabelView = (TextView) view.findViewById(R.id.labelTextView);
             imageView = (ImageView) view.findViewById(R.id.itemImageView);
             mCardView = (CardView) view.findViewById(R.id.cardView);
+            status = (TextView) view.findViewById(R.id.status);
         }
     }
 
