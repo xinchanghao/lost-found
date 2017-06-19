@@ -28,5 +28,27 @@ public class API_Post {
         this.image = image;
     }
 
+    public String getDetail() {
+        return detail;
+    }
 
+    public String getUser() {
+        return user;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public int getType() {
+        return type;
+    }
 }
