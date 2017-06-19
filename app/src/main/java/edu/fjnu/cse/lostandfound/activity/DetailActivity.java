@@ -11,11 +11,14 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.lang.ref.SoftReference;
@@ -24,7 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.fjnu.cse.lostandfound.R;
+import edu.fjnu.cse.lostandfound.entities.API_ChangeStatus;
+import edu.fjnu.cse.lostandfound.entities.API_ChangeStatus_Ret;
+import edu.fjnu.cse.lostandfound.entities.API_Return;
 import edu.fjnu.cse.lostandfound.entities.LostItem;
+import edu.fjnu.cse.lostandfound.net.api;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -54,6 +61,7 @@ public class DetailActivity extends BaseActivity {
         setContentView(R.layout.activity_detail);
         appContext = (AppContext) getApplication();
         item = appContext.getCurrentItem();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         findView();
         init();
     }
@@ -83,7 +91,7 @@ public class DetailActivity extends BaseActivity {
 
         viewPager.setOnPageChangeListener(new ViewPagerListener());
         initIndicator();
-        if(indicatorImages.length == 0){
+        if (indicatorImages.length == 0) {
             findViewById(R.id.imagesContent).setVisibility(View.GONE);
         }
 
@@ -98,7 +106,7 @@ public class DetailActivity extends BaseActivity {
         mLabelView = (TextView) findViewById(R.id.labelTextView);
         imageView = (ImageView) findViewById(R.id.itemImageView);
         senderTextView = (TextView) findViewById(R.id.senderTextView);
-        sendTimeTextView =(TextView) findViewById(R.id.sendTimeTextView);
+        sendTimeTextView = (TextView) findViewById(R.id.sendTimeTextView);
     }
 
     /**
@@ -127,6 +135,68 @@ public class DetailActivity extends BaseActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_detail, menu);
+        if(item.getType() == 0) {
+            menu.findItem(R.id.detail_find).setTitle("已领取");
+            menu.findItem(R.id.detail_unfind).setTitle("待领取");
+        } else {
+            menu.findItem(R.id.detail_find).setTitle("已找到");
+            menu.findItem(R.id.detail_unfind).setTitle("未找到");
+        }
+        if (item.getUser().equals(appContext.getName())) {
+            if (item.getStatus() == 1) {
+                menu.findItem(R.id.detail_find).setVisible(false);
+                menu.findItem(R.id.detail_unfind).setVisible(true);
+            }else{
+                menu.findItem(R.id.detail_find).setVisible(true);
+                menu.findItem(R.id.detail_unfind).setVisible(false);
+            }
+        } else {
+            menu.findItem(R.id.detail_find).setVisible(false);
+            menu.findItem(R.id.detail_unfind).setVisible(false);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        } else if(id == R.id.detail_find) {
+            api.Request(new API_ChangeStatus(this.item.getUid(), 1), new API_Return<API_ChangeStatus_Ret>() {
+                @Override
+                public void ret(int Code, API_ChangeStatus_Ret ret) {
+                    if (Code == 0) {
+                        finish();
+                    } else {
+                        System.out.println("error:" + Code);
+                    }
+                }
+            }, DetailActivity.this);
+        } else if(id == R.id.detail_unfind) {
+            api.Request(new API_ChangeStatus(this.item.getUid(), 0), new API_Return<API_ChangeStatus_Ret>() {
+                @Override
+                public void ret(int Code, API_ChangeStatus_Ret ret) {
+                    if (Code == 0) {
+                        finish();
+                    } else {
+                        System.out.println("error:" + Code);
+                    }
+                }
+            }, DetailActivity.this);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     /**
      * 适配器，负责装配 、销毁  数据  和  组件 。
@@ -193,7 +263,7 @@ public class DetailActivity extends BaseActivity {
             View view = mList.get(position);
             imageView = ((ImageView) view.findViewById(R.id.detailImageView));
             imageView.setImageDrawable(cachedImage);
-                    //setBackground(cachedImage);
+            //setBackground(cachedImage);
             //view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
             container.removeView(mList.get(position));
             container.addView(mList.get(position));
