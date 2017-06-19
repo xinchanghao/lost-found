@@ -19,9 +19,18 @@ public class AppContext extends Application {
     private LostItem currentItem;
     private boolean nfcEnabled;
     private boolean isNFC_support = false;
+    private boolean notifyChanged;
     //public static String mDomain = "192.168.198.190";
     public static String mDomain = "l.city";
     public String searchText;
+
+    public boolean isNotifyChanged() {
+        return notifyChanged;
+    }
+
+    public void setNotifyChanged(boolean notifyChanged) {
+        this.notifyChanged = notifyChanged;
+    }
 
     public String getSearchText() {
         return searchText;

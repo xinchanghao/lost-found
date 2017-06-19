@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import edu.fjnu.cse.lostandfound.R;
+import edu.fjnu.cse.lostandfound.activity.AppContext;
 import edu.fjnu.cse.lostandfound.adapt.FoundRecyclerViewAdapter;
 import edu.fjnu.cse.lostandfound.entities.API_GetFound;
 import edu.fjnu.cse.lostandfound.entities.API_GetFound_Ret;
@@ -34,6 +35,7 @@ public class FoundFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private FoundRecyclerViewAdapter foundRecyclerViewAdapter;
     private int count = 1;
+    private AppContext appContext;
 
     public FoundFragment() {
     }
@@ -47,6 +49,7 @@ public class FoundFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appContext = (AppContext) getActivity().getApplication();
     }
 
     @Override
@@ -117,7 +120,7 @@ public class FoundFragment extends Fragment {
         return view;
     }
 
-    private void initData() {
+    public void initData() {
         api.Request(new API_GetFound(1), new API_Return<API_GetFound_Ret>() {
             @Override
             public void ret(int Code, API_GetFound_Ret ret) {
@@ -132,6 +135,7 @@ public class FoundFragment extends Fragment {
                     }
                     foundRecyclerViewAdapter.notifyDataSetChanged();
                     recyclerView.scrollToPosition(0);
+                    recyclerView.setAdapter(foundRecyclerViewAdapter);
                 } else {
                     System.out.println("error:" + Code);
                 }
@@ -144,6 +148,14 @@ public class FoundFragment extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (appContext.isNotifyChanged()) {
+            initData();
+            appContext.setNotifyChanged(false);
+        }
+    }
 
     @Override
     public void onAttach(Context context) {

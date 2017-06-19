@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.fjnu.cse.lostandfound.R;
+import edu.fjnu.cse.lostandfound.activity.AppContext;
 import edu.fjnu.cse.lostandfound.adapt.LostRecyclerViewAdapter;
+import edu.fjnu.cse.lostandfound.entities.API_GetIndex;
 import edu.fjnu.cse.lostandfound.entities.API_GetLost;
 import edu.fjnu.cse.lostandfound.entities.API_GetLost_Ret;
 import edu.fjnu.cse.lostandfound.entities.API_Return;
@@ -49,19 +51,16 @@ public class HomeFragment extends Fragment {
     private ViewPagerAdapter adapter;
     private ImageView[] indicatorImages;//存放引到图片数组
     private LayoutInflater inflater;
+    private AppContext appContext;
 
     public HomeFragment() {
     }
 
-    @SuppressWarnings("unused")
-    public static HomeFragment newInstance(int columnCount) {
-        HomeFragment fragment = new HomeFragment();
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appContext = (AppContext) getActivity().getApplication();
     }
 
     @Override
@@ -73,7 +72,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onRefresh() {
 
-                api.Request(new API_GetLost(1), new API_Return<API_GetLost_Ret>() {
+                api.Request(new API_GetIndex(1), new API_Return<API_GetLost_Ret>() {
                     @Override
                     public void ret(int Code, API_GetLost_Ret ret) {
                         if (Code == 0) {
@@ -103,7 +102,7 @@ public class HomeFragment extends Fragment {
                 recyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        api.Request(new API_GetLost(1), new API_Return<API_GetLost_Ret>() {
+                        api.Request(new API_GetIndex(1), new API_Return<API_GetLost_Ret>() {
                             @Override
                             public void ret(int Code, API_GetLost_Ret ret) {
                                 if (Code == 0) {
@@ -156,8 +155,17 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void initData() {
-        api.Request(new API_GetLost(1), new API_Return<API_GetLost_Ret>() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (appContext.isNotifyChanged()) {
+            initData();
+            appContext.setNotifyChanged(false);
+        }
+    }
+
+    public void initData() {
+        api.Request(new API_GetIndex(1), new API_Return<API_GetLost_Ret>() {
             @Override
             public void ret(int Code, API_GetLost_Ret ret) {
                 if (Code == 0) {
@@ -167,6 +175,7 @@ public class HomeFragment extends Fragment {
                     recyclerView.setAutoLoadMoreEnable(false);
                     lostRecyclerViewAdapter.notifyDataSetChanged();
                     recyclerView.scrollToPosition(0);
+                    recyclerView.setAdapter(lostRecyclerViewAdapter);
                 } else {
                     System.out.println("error:" + Code);
                 }

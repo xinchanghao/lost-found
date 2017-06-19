@@ -17,8 +17,6 @@ import java.util.List;
 import edu.fjnu.cse.lostandfound.R;
 import edu.fjnu.cse.lostandfound.activity.AppContext;
 import edu.fjnu.cse.lostandfound.adapt.FoundRecyclerViewAdapter;
-import edu.fjnu.cse.lostandfound.entities.API_GetMy;
-import edu.fjnu.cse.lostandfound.entities.API_GetMy_Ret;
 import edu.fjnu.cse.lostandfound.entities.API_Return;
 import edu.fjnu.cse.lostandfound.entities.API_Search;
 import edu.fjnu.cse.lostandfound.entities.API_Search_Ret;
@@ -85,7 +83,8 @@ public class SearchFragment extends Fragment {
                             foundRecyclerViewAdapter.setDatas(mDatas);
                             recyclerView.setAutoLoadMoreEnable(false);
                             foundRecyclerViewAdapter.notifyDataSetChanged();
-                            recyclerView.scrollToPosition(0);                        }
+                            recyclerView.scrollToPosition(0);
+                        }
                     }
                 }, SearchFragment.this.getActivity());
 
@@ -133,6 +132,15 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (appContext.isNotifyChanged()) {
+            initData();
+            appContext.setNotifyChanged(false);
+        }
+    }
+
     public void initData() {
         api.Request(new API_Search(1, appContext.getSearchText()), new API_Return<API_Search_Ret>() {
             @Override
@@ -148,6 +156,7 @@ public class SearchFragment extends Fragment {
                     }
                     foundRecyclerViewAdapter.notifyDataSetChanged();
                     recyclerView.scrollToPosition(0);
+                    recyclerView.setAdapter(foundRecyclerViewAdapter);
                 } else {
                     System.out.println("error:" + Code);
                     swipeRefreshLayout.setRefreshing(false);
@@ -156,6 +165,7 @@ public class SearchFragment extends Fragment {
                     recyclerView.setAutoLoadMoreEnable(false);
                     foundRecyclerViewAdapter.notifyDataSetChanged();
                     recyclerView.scrollToPosition(0);
+                    recyclerView.setAdapter(foundRecyclerViewAdapter);
                 }
             }
         }, SearchFragment.this.getActivity());

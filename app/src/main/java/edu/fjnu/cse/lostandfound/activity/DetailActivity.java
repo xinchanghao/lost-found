@@ -177,6 +177,7 @@ public class DetailActivity extends BaseActivity {
                 @Override
                 public void ret(int Code, API_ChangeStatus_Ret ret) {
                     if (Code == 0) {
+                        appContext.setNotifyChanged(true);
                         finish();
                     } else {
                         System.out.println("error:" + Code);
@@ -188,6 +189,7 @@ public class DetailActivity extends BaseActivity {
                 @Override
                 public void ret(int Code, API_ChangeStatus_Ret ret) {
                     if (Code == 0) {
+                        appContext.setNotifyChanged(true);
                         finish();
                     } else {
                         System.out.println("error:" + Code);

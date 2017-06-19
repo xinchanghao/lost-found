@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import edu.fjnu.cse.lostandfound.R;
+import edu.fjnu.cse.lostandfound.activity.AppContext;
 import edu.fjnu.cse.lostandfound.adapt.LostRecyclerViewAdapter;
 import edu.fjnu.cse.lostandfound.entities.API_GetLost;
 import edu.fjnu.cse.lostandfound.entities.API_GetLost_Ret;
@@ -34,18 +35,15 @@ public class LostFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private LostRecyclerViewAdapter lostRecyclerViewAdapter;
     private int count = 1;
+    private AppContext appContext;
 
     public LostFragment() {
-    }
-
-    public static LostFragment newInstance(int columnCount) {
-        LostFragment fragment = new LostFragment();
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appContext = (AppContext) getActivity().getApplication();
     }
 
     @Override
@@ -116,7 +114,16 @@ public class LostFragment extends Fragment {
         return view;
     }
 
-    private void initData() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (appContext.isNotifyChanged()) {
+            initData();
+            appContext.setNotifyChanged(false);
+        }
+    }
+
+    public void initData() {
         api.Request(new API_GetLost(1), new API_Return<API_GetLost_Ret>() {
             @Override
             public void ret(int Code, API_GetLost_Ret ret) {
@@ -131,6 +138,7 @@ public class LostFragment extends Fragment {
                     }
                     lostRecyclerViewAdapter.notifyDataSetChanged();
                     recyclerView.scrollToPosition(0);
+                    recyclerView.setAdapter(lostRecyclerViewAdapter);
                 } else {
                     System.out.println("error:" + Code);
                 }
@@ -153,8 +161,6 @@ public class LostFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
-
-
 
 
 }

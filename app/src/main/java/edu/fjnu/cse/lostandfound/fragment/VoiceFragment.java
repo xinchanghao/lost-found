@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iflytek.cloud.ErrorCode;
@@ -46,6 +47,7 @@ public class VoiceFragment extends Fragment {
     private HashMap<String, String> mIatResults = new LinkedHashMap<String, String>();
     private boolean alive;
     private AppContext appContext;
+    private TextView textView3;
 
     public VoiceFragment() {
     }
@@ -66,21 +68,29 @@ public class VoiceFragment extends Fragment {
     }
 
     private void findView(View view) {
+        textView3 = (TextView) view.findViewById(R.id.textView3);
         voiceImage = (ImageView) view.findViewById(R.id.imageView5);
+        voiceImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+                    mIat = SpeechRecognizer.createRecognizer(getActivity(), mInitListener);
+                    mIat.setParameter(SpeechConstant.ASR_PTT, "0");
+                    mIat.startListening(mRecognizerListener);
+                } else {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+                }
+                textView3.setText("请说出你想要寻找的物品");
+            }
+        });
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         alive = true;
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-            mIat = SpeechRecognizer.createRecognizer(getActivity(), mInitListener);
-            mIat.setParameter(SpeechConstant.ASR_PTT, "0");
-            mIat.startListening(mRecognizerListener);
-        } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.RECORD_AUDIO}, 1);
-        }
-
+        textView3.setText("点击开始语音查找");
     }
 
     @Override
@@ -143,16 +153,20 @@ public class VoiceFragment extends Fragment {
             // 错误码：10118(您没有说话)，可能是录音机权限被禁，需要提示用户打开应用的录音权限。
             // 如果使用本地功能（语记）需要提示用户开启语记的录音权限。
 //            showTip(error.getPlainDescription(true));
-            if (alive)
+            if (alive) {
                 voiceImage.setAlpha(0);
+                textView3.setText("点击开始语音查找");
+            }
         }
 
         @Override
         public void onEndOfSpeech() {
             // 此回调表示：检测到了语音的尾端点，已经进入识别过程，不再接受语音输入
 //            showTip("结束说话");
-            if (alive)
+            if (alive) {
                 voiceImage.setAlpha(0);
+                textView3.setText("点击开始语音查找");
+            }
         }
 
         @Override

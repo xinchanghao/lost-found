@@ -83,7 +83,8 @@ public class MyFragment extends Fragment {
                             foundRecyclerViewAdapter.setDatas(mDatas);
                             recyclerView.setAutoLoadMoreEnable(false);
                             foundRecyclerViewAdapter.notifyDataSetChanged();
-                            recyclerView.scrollToPosition(0);                        }
+                            recyclerView.scrollToPosition(0);
+                        }
                     }
                 }, MyFragment.this.getActivity());
 
@@ -131,7 +132,16 @@ public class MyFragment extends Fragment {
         return view;
     }
 
-    private void initData() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (appContext.isNotifyChanged()) {
+            initData();
+            appContext.setNotifyChanged(false);
+        }
+    }
+
+    public void initData() {
         api.Request(new API_GetMy(1, appContext.getName()), new API_Return<API_GetMy_Ret>() {
             @Override
             public void ret(int Code, API_GetMy_Ret ret) {
@@ -146,6 +156,7 @@ public class MyFragment extends Fragment {
                     }
                     foundRecyclerViewAdapter.notifyDataSetChanged();
                     recyclerView.scrollToPosition(0);
+                    recyclerView.setAdapter(foundRecyclerViewAdapter);
                 } else {
                     System.out.println("error:" + Code);
                     swipeRefreshLayout.setRefreshing(false);
@@ -154,6 +165,7 @@ public class MyFragment extends Fragment {
                     recyclerView.setAutoLoadMoreEnable(false);
                     foundRecyclerViewAdapter.notifyDataSetChanged();
                     recyclerView.scrollToPosition(0);
+                    recyclerView.setAdapter(foundRecyclerViewAdapter);
                 }
             }
         }, MyFragment.this.getActivity());
