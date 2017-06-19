@@ -79,7 +79,7 @@ public class CardFragment extends Fragment {
                 if(textID.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
                     textID.setInputType(InputType.TYPE_NULL);
                 }else{
-                    textID.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
+                    textID.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
             }
         });
@@ -120,6 +120,7 @@ public class CardFragment extends Fragment {
         textLastTime.setText("...");
         textID.setText("...");
         textMoney.setText("...");
+        textID.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
     }
 
     @Override
