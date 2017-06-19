@@ -10,6 +10,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,16 @@ public class CardFragment extends Fragment {
         textID = (TextView) view.findViewById(R.id.textID);
         textMoney = (TextView) view.findViewById(R.id.textMoney);
         loading = (LinearLayout) view.findViewById(R.id.loading);
+        textID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(textID.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
+                    textID.setInputType(InputType.TYPE_NULL);
+                }else{
+                    textID.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
+                }
+            }
+        });
         setStatus(0);
     }
 
