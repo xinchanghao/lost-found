@@ -22,7 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
 import edu.fjnu.cse.lostandfound.R;
-import edu.fjnu.cse.lostandfound.activity.MainActivity;
+import edu.fjnu.cse.lostandfound.activity.AppContext;
 import edu.fjnu.cse.lostandfound.tools.RSAEncrypt;
 import edu.fjnu.cse.lostandfound.tools.Utils;
 import okhttp3.Call;
@@ -35,12 +35,13 @@ public class CardFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    LinearLayout cardinfo, loading;
-    TextView name, cardID, textTodayCost, textLastCost, textLastTime, textID, textMoney;
-    RelativeLayout statusWait;
-    RelativeLayout statusNoNFC;
-    RelativeLayout statusError;
-
+    private LinearLayout cardinfo, loading;
+    private TextView name, cardID, textTodayCost, textLastCost, textLastTime, textID, textMoney;
+    private RelativeLayout statusWait;
+    private RelativeLayout statusNoNFC;
+    private RelativeLayout statusError;
+    private RelativeLayout statusNFCDisabled;
+    private AppContext appContext;
 
     public CardFragment() {
     }
@@ -48,6 +49,7 @@ public class CardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appContext = (AppContext) getActivity().getApplication();
     }
 
     @Override
@@ -63,14 +65,27 @@ public class CardFragment extends Fragment {
         statusWait = (RelativeLayout) view.findViewById(R.id.statusWait);
         statusError = (RelativeLayout) view.findViewById(R.id.statusError);
         statusNoNFC = (RelativeLayout) view.findViewById(R.id.statusNoNFC);
-        setStatus(0);
+        statusNFCDisabled = (RelativeLayout) view.findViewById(R.id.statusNFCDisabled);
         textTodayCost = (TextView) view.findViewById(R.id.textTodayCost);
         textLastCost = (TextView) view.findViewById(R.id.textLastCost);
         textLastTime = (TextView) view.findViewById(R.id.textLastTime);
         textID = (TextView) view.findViewById(R.id.textID);
         textMoney = (TextView) view.findViewById(R.id.textMoney);
         loading = (LinearLayout) view.findViewById(R.id.loading);
+        setStatus(0);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (appContext.isNFC_support())
+            if (appContext.isNfcEnabled()) {
+                if (statusNFCDisabled.getVisibility() == View.VISIBLE)
+                    setStatus(0);
+            } else
+                setStatus(4);
+        else
+            setStatus(1);
     }
 
     @Override
@@ -106,6 +121,7 @@ public class CardFragment extends Fragment {
         statusWait.setVisibility(View.GONE);
         statusError.setVisibility(View.GONE);
         statusNoNFC.setVisibility(View.GONE);
+        statusNFCDisabled.setVisibility(View.GONE);
         cardinfo.setVisibility(View.GONE);
         switch (status) {
             case 0:
@@ -119,6 +135,9 @@ public class CardFragment extends Fragment {
                 break;
             case 3:
                 cardinfo.setVisibility(View.VISIBLE);
+                break;
+            case 4:
+                statusNFCDisabled.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -273,7 +292,6 @@ public class CardFragment extends Fragment {
             return false;
         }
     }
-
 
 
 }

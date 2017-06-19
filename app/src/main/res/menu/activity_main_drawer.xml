@@ -22,6 +22,10 @@
             android:id="@+id/nav_voice"
             android:icon="@drawable/ic_keyboard_voice_black_24dp"
             android:title="语音寻物" />
+        <item
+            android:id="@+id/nav_my"
+            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:title="我发布的信息" />
     </group>
 
     <!--item android:title="分享">

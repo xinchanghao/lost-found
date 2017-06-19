@@ -8,8 +8,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  */
 
 public class LostItem {
-    @JSONField(name="uid")
-    private int ID;
+    private int uid;
     @JSONField(name="user")
     private String User;
     @JSONField(name="place")
@@ -23,6 +22,24 @@ public class LostItem {
     private String CreateTime;
     @JSONField(name="pic")
     private PicItem[] Pic;
+    private int type;
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public String getTime() {
         return Time;
@@ -44,8 +61,8 @@ public class LostItem {
         Pic = pic;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
     public void setUser(String user) {
@@ -68,8 +85,8 @@ public class LostItem {
         CreateTime = createTime;
     }
 
-    public int getID() {
-        return ID;
+    public int getUid() {
+        return uid;
     }
 
     public String getUser() {

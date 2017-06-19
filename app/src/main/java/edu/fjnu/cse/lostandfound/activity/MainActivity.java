@@ -16,6 +16,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +34,8 @@ import edu.fjnu.cse.lostandfound.fragment.CardFragment;
 import edu.fjnu.cse.lostandfound.fragment.FoundFragment;
 import edu.fjnu.cse.lostandfound.fragment.HomeFragment;
 import edu.fjnu.cse.lostandfound.fragment.LostFragment;
+import edu.fjnu.cse.lostandfound.fragment.MyFragment;
+import edu.fjnu.cse.lostandfound.fragment.SearchFragment;
 import edu.fjnu.cse.lostandfound.fragment.VoiceFragment;
 
 ///
@@ -52,10 +55,15 @@ public class MainActivity extends BaseActivity
     private LostFragment lostFragment;
     private FoundFragment foundFragment;
     private CardFragment cardFragment;
+    private SearchFragment searchFragment;
+    private MyFragment myFragment;
     private VoiceFragment voiceFragment;
+    private ActionBarDrawerToggle toggle;
     private PendingIntent pi = null;
     private boolean isNFC_support = false;
     private IntentFilter tagDetected = null;
+    private int currentFragment = 1;
+    private int lastFragment = 1;
     NfcAdapter nfcAdapter;
 
     @Override
@@ -95,6 +103,8 @@ public class MainActivity extends BaseActivity
         foundFragment = new FoundFragment();
         cardFragment = new CardFragment();
         voiceFragment = new VoiceFragment();
+        myFragment = new MyFragment();
+        searchFragment = new SearchFragment();
         //Toolbar 设置标题
         toolbar.setTitle(R.string.app_name_long);
         setSupportActionBar(toolbar);
@@ -105,17 +115,31 @@ public class MainActivity extends BaseActivity
             public void onClick(View view) {
 //                Snackbar.make(view, "敬请期待", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                Intent intent = new Intent(MainActivity.this, PublishActivity.class);
-                startActivity(intent);
+                if (appContext.isLogined()) {
+                    Intent intent = new Intent(MainActivity.this, PublishActivity.class);
+                    startActivity(intent);
+                } else {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
+
             }
         });
 
         navigationView.setNavigationItemSelectedListener(this);
-
         //汉堡按钮
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        toggle.setDrawerIndicatorEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawer.setDrawerListener(toggle);
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!toggle.isDrawerIndicatorEnabled())
+                    onBackPressed();
+            }
+        });
         toggle.syncState();
 
 
@@ -174,7 +198,7 @@ public class MainActivity extends BaseActivity
                 }
             });
         }
-        getAllChildViews(getWindow().getDecorView(), 0);
+//        getAllChildViews(getWindow().getDecorView(), 0);
     }
 
     @Override
@@ -184,6 +208,22 @@ public class MainActivity extends BaseActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            getSupportFragmentManager().popBackStack();
+            toggle.setDrawerIndicatorEnabled(true);
+            currentFragment = lastFragment;
+            if (currentFragment == 1) {
+                toolbar.setTitle(R.string.app_name_long);
+            } else if (currentFragment == 2) {
+                toolbar.setTitle(R.string.ILost);
+            } else if (currentFragment == 3) {
+                toolbar.setTitle(R.string.IFound);
+            } else if (currentFragment == 4) {
+                toolbar.setTitle("查询餐卡");
+            } else if (currentFragment == 5) {
+                toolbar.setTitle("语音寻物");
+            } else if (currentFragment == 6) {
+                toolbar.setTitle("我发布的信息");
+            }
         }
     }
 
@@ -208,6 +248,24 @@ public class MainActivity extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        SearchView mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String string) {
+//                searchNote(string);
+                appContext.setSearchText(string);
+                changeToSearch();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String string) {
+//                searchNote(string);
+//                appContext.setSearchText(string);
+//                changeToSearch();
+                return true;
+            }
+        });
         return true;
     }
 
@@ -216,11 +274,15 @@ public class MainActivity extends BaseActivity
         if (nfcAdapter == null) {
 //            setStatus(2);
             isNFC_support = false;
+            appContext.setNFC_support(false);
         } else {
             isNFC_support = true;
+            appContext.setNFC_support(true);
             if (nfcAdapter != null && !nfcAdapter.isEnabled()) {
 //                setStatus(2);
+                appContext.setNfcEnabled(false);
             } else {
+                appContext.setNfcEnabled(true);
 //                if (textView.getText().equals("请打开NFC功能") || textView.getText().equals("")) {
 //                    textView.setTextColor(Color.rgb(41, 128, 185));
 //                    textView.setText("等待接触卡片...");
@@ -255,7 +317,6 @@ public class MainActivity extends BaseActivity
 //            startActivity(intent);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -290,18 +351,24 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
         fab.setVisibility(View.VISIBLE);
         if (id == R.id.nav_home) {
+            lastFragment = currentFragment;
+            currentFragment = 1;
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.replace(R.id.content_main, homeFragment);
             transaction.commit();
             toolbar.setTitle(R.string.app_name_long);
         } else if (id == R.id.nav_lost) {
+            lastFragment = currentFragment;
+            currentFragment = 2;
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.replace(R.id.content_main, lostFragment);
             transaction.commit();
             toolbar.setTitle(R.string.ILost);
         } else if (id == R.id.nav_found) {
+            lastFragment = currentFragment;
+            currentFragment = 3;
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.replace(R.id.content_main, foundFragment);
@@ -310,19 +377,56 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_card) {
             changeToCard();
         } else if (id == R.id.nav_voice) {
+            lastFragment = currentFragment;
+            currentFragment = 5;
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.replace(R.id.content_main, voiceFragment);
             transaction.commit();
             toolbar.setTitle("语音寻物");
             fab.setVisibility(View.GONE);
+        } else if (id == R.id.nav_my) {
+            if (appContext.isLogined()) {
+                lastFragment = currentFragment;
+                currentFragment = 6;
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.replace(R.id.content_main, myFragment);
+                transaction.commit();
+                toolbar.setTitle("我发布的信息");
+            } else {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    public void changeToSearch() {
+        fab.setVisibility(View.VISIBLE);
+        if (currentFragment == 7) {
+            searchFragment.initData();
+            toolbar.setTitle("查询 “" + appContext.getSearchText() + "”");
+        } else {
+            lastFragment = currentFragment;
+            currentFragment = 7;
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            transaction.replace(R.id.content_main, searchFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+            toolbar.setTitle("查询 “" + appContext.getSearchText() + "”");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            toggle.setDrawerIndicatorEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+    }
+
     private void changeToCard() {
+        lastFragment = currentFragment;
+        currentFragment = 4;
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.replace(R.id.content_main, cardFragment);

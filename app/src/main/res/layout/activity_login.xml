@@ -59,7 +59,7 @@
                     app:srcCompat="@mipmap/login_logo" />
 
                 <AutoCompleteTextView
-                    android:id="@+id/ID"
+                    android:id="@+id/uid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/login_edit_backgound"

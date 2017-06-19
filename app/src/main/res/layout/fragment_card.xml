@@ -91,6 +91,43 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/statusNFCDisabled"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:weightSum="5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="17dp"
+                android:gravity="center"
+                android:text="您的手机未启用NFC功能"
+                android:textSize="20dp" />
+
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="250dp"
+                android:layout_height="300dp"
+                android:layout_below="@+id/textView"
+                android:layout_centerHorizontal="true"
+                app:srcCompat="@drawable/buscard_stickcard_notconnected_icon25faea" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/statusError"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

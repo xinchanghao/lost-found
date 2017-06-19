@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:gravity="top|left"
-        android:hint="请输入标题"
+        android:hint="请输入物品标签，例如课本，U盘，餐卡"
         android:maxLength="500"
         android:padding="15dp"
         android:textColor="#000"
@@ -66,7 +66,7 @@
             android:text="地点" />
 
         <EditText
-            android:id="@+id/wpost_et"
+            android:id="@+id/wpost_ePlace"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -79,13 +79,13 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/wpost_et"
+        android:id="@+id/wpost_eDetail"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@android:color/transparent"
         android:gravity="top|left"
-        android:hint="请输入描述"
+        android:hint="请输入物品描述，联系方式等"
         android:maxLength="500"
         android:padding="15dp"
         android:textColor="#000"

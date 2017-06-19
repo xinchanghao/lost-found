@@ -167,7 +167,7 @@ public class LoginActivity extends BaseActivity {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         mPasswordView = (EditText) findViewById(R.id.password);
-        mIDView = (AutoCompleteTextView) findViewById(R.id.ID);
+        mIDView = (AutoCompleteTextView) findViewById(R.id.uid);
         mCaptchaImageView = (ImageView) findViewById(R.id.captchaImageView);
         mSignInButton = (Button) findViewById(R.id.email_sign_in_button);
     }

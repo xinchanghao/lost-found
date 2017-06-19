@@ -20,7 +20,16 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 import edu.fjnu.cse.lostandfound.R;
+import edu.fjnu.cse.lostandfound.activity.AppContext;
+import edu.fjnu.cse.lostandfound.activity.MainActivity;
+import edu.fjnu.cse.lostandfound.tools.JsonParser;
 
 /**
  * Created by zspmh on 2017-06-18.
@@ -34,7 +43,9 @@ public class VoiceFragment extends Fragment {
     private SpeechRecognizer mIat;
     private String mEngineType = SpeechConstant.TYPE_CLOUD;
     private ImageView voiceImage;
-
+    private HashMap<String, String> mIatResults = new LinkedHashMap<String, String>();
+    private boolean alive;
+    private AppContext appContext;
 
     public VoiceFragment() {
     }
@@ -42,6 +53,7 @@ public class VoiceFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appContext = (AppContext) getActivity().getApplication();
     }
 
     @Override
@@ -60,8 +72,10 @@ public class VoiceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        alive = true;
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
             mIat = SpeechRecognizer.createRecognizer(getActivity(), mInitListener);
+            mIat.setParameter(SpeechConstant.ASR_PTT, "0");
             mIat.startListening(mRecognizerListener);
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.RECORD_AUDIO}, 1);
@@ -76,6 +90,7 @@ public class VoiceFragment extends Fragment {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     int ret = 0;
                     mIat = SpeechRecognizer.createRecognizer(getActivity(), mInitListener);
+                    mIat.setParameter(SpeechConstant.ASR_PTT, "0");
                     mIat.startListening(mRecognizerListener);
 
                 } else {
@@ -89,13 +104,37 @@ public class VoiceFragment extends Fragment {
         }
     }
 
+    private String printResult(RecognizerResult results) {
+        String text = JsonParser.parseIatResult(results.getResultString());
+
+        String sn = null;
+        // 读取json结果中的sn字段
+        try {
+            JSONObject resultJson = new JSONObject(results.getResultString());
+            sn = resultJson.optString("sn");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        mIatResults.put(sn, text);
+
+        StringBuffer resultBuffer = new StringBuffer();
+        for (String key : mIatResults.keySet()) {
+            resultBuffer.append(mIatResults.get(key));
+        }
+        return resultBuffer.toString();
+//
+//        mResultText.setText(resultBuffer.toString());
+//        mResultText.setSelection(mResultText.length());
+    }
+
     private RecognizerListener mRecognizerListener = new RecognizerListener() {
 
         @Override
         public void onBeginOfSpeech() {
             // 此回调表示：sdk内部录音机已经准备好了，用户可以开始语音输入
 //            showTip("开始说话");
-            Toast.makeText(getActivity(), "aa", Toast.LENGTH_SHORT).show();
+            mIatResults.clear();
         }
 
         @Override
@@ -104,25 +143,27 @@ public class VoiceFragment extends Fragment {
             // 错误码：10118(您没有说话)，可能是录音机权限被禁，需要提示用户打开应用的录音权限。
             // 如果使用本地功能（语记）需要提示用户开启语记的录音权限。
 //            showTip(error.getPlainDescription(true));
-            voiceImage.setAlpha(0);
-            Toast.makeText(getActivity(), "bb", Toast.LENGTH_SHORT).show();
+            if (alive)
+                voiceImage.setAlpha(0);
         }
 
         @Override
         public void onEndOfSpeech() {
             // 此回调表示：检测到了语音的尾端点，已经进入识别过程，不再接受语音输入
 //            showTip("结束说话");
-            voiceImage.setAlpha(0);
-            Toast.makeText(getActivity(), "cc", Toast.LENGTH_SHORT).show();
+            if (alive)
+                voiceImage.setAlpha(0);
         }
 
         @Override
         public void onResult(RecognizerResult results, boolean isLast) {
 //            Log.d(TAG, results.getResultString());
-//            printResult(results);
-
-            if (isLast) {
-                // TODO 最后的结果
+            if (alive) {
+                appContext.setSearchText(printResult(results));
+                if (isLast) {
+                    ((MainActivity) getActivity()).changeToSearch();
+                    // TODO 最后的结果
+                }
             }
         }
 
@@ -130,7 +171,8 @@ public class VoiceFragment extends Fragment {
         public void onVolumeChanged(int volume, byte[] data) {
 //            showTip("当前正在说话，音量大小：" + volume);
 //            Log.d(TAG, "返回音频数据："+data.length);
-            voiceImage.setAlpha((float) volume / 20f);
+            if (alive)
+                voiceImage.setAlpha((float) volume / 20f);
         }
 
         @Override
@@ -156,6 +198,7 @@ public class VoiceFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        alive = false;
     }
 
     @Override
