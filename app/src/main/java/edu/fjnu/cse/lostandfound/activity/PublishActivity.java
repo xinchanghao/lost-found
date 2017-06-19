@@ -19,10 +19,6 @@ public class PublishActivity extends BaseActivity implements TimePickerDialog.Ti
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        findView();
     }
 
     private void findView() {

@@ -36,8 +36,7 @@ import edu.fjnu.cse.lostandfound.fragment.LostFragment;
 import edu.fjnu.cse.lostandfound.fragment.VoiceFragment;
 
 ///
-public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity {
     private AppContext appContext;
     private NavigationView navigationView;
     private Button navButton;
@@ -110,7 +109,7 @@ public class MainActivity extends BaseActivity
             }
         });
 
-        navigationView.setNavigationItemSelectedListener(this);
+       // navigationView.setNavigationItemSelectedListener(this);
 
         //汉堡按钮
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -174,7 +173,7 @@ public class MainActivity extends BaseActivity
                 }
             });
         }
-        getAllChildViews(getWindow().getDecorView(), 0);
+       // getAllChildViews(getWindow().getDecorView(), 0);
     }
 
     @Override
@@ -187,22 +186,7 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        if (NfcAdapter.ACTION_ADAPTER_STATE_CHANGED.equals(intent.getAction())) {
-            changeToCard();
-            cardFragment.readFromCard(intent);
-//            readFromCard(intent);
-        }
-        if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
-            changeToCard();
-            cardFragment.readFromCard(intent);
-        }
-        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
-            changeToCard();
-            cardFragment.readFromCard(intent);
-        }
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -266,69 +250,5 @@ public class MainActivity extends BaseActivity
         return sb.toString();
     }
 
-    private void getAllChildViews(View view, int len) {
-        Log.d("asd", getNone(len) + "View " + view.getClass().getName() + " h" + view.getMeasuredHeight()
-                + " w" + view.getMeasuredWidth());
-        if (view instanceof ViewGroup) {
-            ViewGroup vp = (ViewGroup) view;
-            //XposedBridge.log(String.valueOf(vp.getChildCount()));
-            for (int i = 0; i < vp.getChildCount(); i++) {
-                View viewchild = vp.getChildAt(i);
-                getAllChildViews(viewchild, len + 1);
-            }
 
-        } else if (view instanceof ViewStub) {
-            ViewStub vs = (ViewStub) view;
-            //vs.getv
-        }
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        fab.setVisibility(View.VISIBLE);
-        if (id == R.id.nav_home) {
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.replace(R.id.content_main, homeFragment);
-            transaction.commit();
-            toolbar.setTitle(R.string.app_name_long);
-        } else if (id == R.id.nav_lost) {
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.replace(R.id.content_main, lostFragment);
-            transaction.commit();
-            toolbar.setTitle(R.string.ILost);
-        } else if (id == R.id.nav_found) {
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.replace(R.id.content_main, foundFragment);
-            transaction.commit();
-            toolbar.setTitle(R.string.IFound);
-        } else if (id == R.id.nav_card) {
-            changeToCard();
-        } else if (id == R.id.nav_voice) {
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.replace(R.id.content_main, voiceFragment);
-            transaction.commit();
-            toolbar.setTitle("语音寻物");
-            fab.setVisibility(View.GONE);
-        }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    private void changeToCard() {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.replace(R.id.content_main, cardFragment);
-        transaction.commit();
-        toolbar.setTitle("查询餐卡");
-        navigationView.getMenu().getItem(3).setChecked(true);
-        fab.setVisibility(View.GONE);
-    }
 }
