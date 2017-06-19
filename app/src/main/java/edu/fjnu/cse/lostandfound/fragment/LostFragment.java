@@ -38,7 +38,6 @@ public class LostFragment extends Fragment {
     public LostFragment() {
     }
 
-    @SuppressWarnings("unused")
     public static LostFragment newInstance(int columnCount) {
         LostFragment fragment = new LostFragment();
         return fragment;
@@ -154,5 +153,8 @@ public class LostFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
+
+
 
 }
