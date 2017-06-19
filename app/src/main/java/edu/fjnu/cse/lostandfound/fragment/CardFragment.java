@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -76,10 +77,10 @@ public class CardFragment extends Fragment {
         textID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(textID.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
-                    textID.setInputType(InputType.TYPE_NULL);
+                if((textID.getInputType() & InputType.TYPE_TEXT_VARIATION_PASSWORD) == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
+                    textID.setInputType(InputType.TYPE_CLASS_TEXT);
                 }else{
-                    textID.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    textID.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
             }
         });
@@ -120,7 +121,8 @@ public class CardFragment extends Fragment {
         textLastTime.setText("...");
         textID.setText("...");
         textMoney.setText("...");
-        textID.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+//        Toast.makeText(appContext,"i"+ textID.getInputType(), Toast.LENGTH_SHORT).show();
+        textID.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
     }
 
     @Override
