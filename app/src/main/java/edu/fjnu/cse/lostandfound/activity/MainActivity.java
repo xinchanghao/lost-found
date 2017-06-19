@@ -38,6 +38,8 @@ import edu.fjnu.cse.lostandfound.fragment.MyFragment;
 import edu.fjnu.cse.lostandfound.fragment.SearchFragment;
 import edu.fjnu.cse.lostandfound.fragment.VoiceFragment;
 
+import static edu.fjnu.cse.lostandfound.R.styleable.NavigationView;
+
 ///
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
