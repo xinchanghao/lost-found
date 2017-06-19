@@ -17,8 +17,35 @@ public class AppContext extends Application {
     private String SID;
     private String Name;
     private LostItem currentItem;
+    private boolean nfcEnabled;
+    private boolean isNFC_support = false;
     //public static String mDomain = "192.168.198.190";
     public static String mDomain = "l.city";
+    public String searchText;
+
+    public String getSearchText() {
+        return searchText;
+    }
+
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
+    }
+
+    public boolean isNfcEnabled() {
+        return nfcEnabled;
+    }
+
+    public void setNfcEnabled(boolean nfcEnabled) {
+        this.nfcEnabled = nfcEnabled;
+    }
+
+    public boolean isNFC_support() {
+        return isNFC_support;
+    }
+
+    public void setNFC_support(boolean NFC_support) {
+        isNFC_support = NFC_support;
+    }
 
     @Override
     public void onCreate() {
