@@ -17,7 +17,7 @@ public class API_GetMy {
         this.page = page;
         this.user = user;
     }
-
+//
     public String getUser() {
         return user;
     }
